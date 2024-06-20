@@ -1,10 +1,7 @@
 import trash from"../image/trash3.svg"
 import { useState } from "react";
+import { ItemProductsProps } from "../Home/ItemProducts";
 
-interface ProductsList {
-  panierList: any[];
-  setPanierList: Function;
-}
 interface ProductsListObjects{
   id: number;
   image: string;
@@ -12,53 +9,41 @@ interface ProductsListObjects{
   quatite:number;
   prix:number;
 }
-/* quatite is not done */
-export default function ChosenItems( props:ProductsList ){
 
-  function handleQuatiteIncrease(quatite:number){ 
-    if(quatite >= 0){
-      return quatite = quatite + 1
-    }else{
-      return quatite
-    }
-  }
-  function handleQuatiteDecrease(quatite:number){
-    
-    if(quatite > 0){
-      return quatite = quatite - 1
-    }else{
-      return quatite
-    }
-  }
+/* quatite is not done */
+export default function ChosenItems( props:ItemProductsProps ){
+
   /* delete product */
-  function handelDelete(id: number){
-    console.log(id);
-    
+  function handelDelete(id:number){
+    const updatedList = props.panierList.filter((item) =>{
+      /* console.log(i, index); */
+      /* console.log(item); */
+      return item.id != id ;  
+    });
+    props.setCount(props.count - 1);
+    props.setPanierList(updatedList);
+    /* console.log(props.panierList); */
   }
- /*  console.log(list); */
-  const listSlected = props.panierList.map((item:ProductsListObjects) => {
+  /* console.log(props.panierList); */
+  const listSlected = props.panierList.map((item, index) => {
     return(
       <div className="row mb-2" key={item.id}>
         {/* item image */}
-        <div className="col-4 p-2">
+        <div className="col-3 p-1">
           <img src={item.image} width="100%" height="100%" alt=""/>
         </div>
         {/* detail d'item  */}
-        <div className="col-4">
+        <div className="col-6">
           <h5 className="text-start">{item.type}</h5>
-          <p className="text-start">prix:{item.prix} </p>
+          <p className="text-start">{item.prix} DH</p>
         </div>
-        <div className="col-4">
+        <div className="col-3">
           <div className="d-flex justify-content-between input-group">
             <div className="quantite-container">
-              <p className="fw-bold">Quantité: {item.quatite}</p>  
-              <div className="btn btn-group">
-                <button className="btn btn-success me-1" onClick={()=> handleQuatiteIncrease(item.quatite)}>+</button>
-                <button className="btn btn-danger" onClick={()=> handleQuatiteDecrease(item.quatite)}>-</button>
-              </div>
+            <p className="fw-bold text-end">{item.quatite} piece</p>
             </div>
             {/*item  delete button */}
-            <div className="mt-1 ms-4">
+            <div className="mt-1">
               <button className="btn btn-outline-danger" onClick={()=>handelDelete(item.id)}><img src={trash} width="25" alt=""/></button>
             </div>
           </div>

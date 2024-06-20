@@ -1,32 +1,41 @@
 import { CSSProperties } from "react";
 import { Products } from "./ProductsData";
+import { useState } from "react";
+import { ItemList } from "./ItemProducts";
 
-import { ItemProductsProps } from "./ItemProducts";
-type T = /*unresolved*/ any;
-
-function ConsoleCategory(props: ItemProductsProps) {
+function ConsoleCategory(props: ItemList) {
   const style: CSSProperties = {
     width: "380px",
   };
 
   function panierItems([...item]) {
-    props.setCount(props.count + 1);
-    props.setPanierList([
+    props.addToList(
       {
         id: item[0],
         image: item[1],
         type: item[2],
         quatite: item[3],
         prix: item[4],
-      },
-      ...props.panierList,
-    ]);
+      }  
+    );
+    /* on add to cart*/
+
   }
+
+  const [quantite, setQuantite] = useState(1);
+  function handelQuantiteIncrease(){
+    quantite >= 1 ? setQuantite(quantite + 1): quantite;
+   
+  }
+  function handelQuantiteDecrease(){
+    quantite > 1 ? setQuantite(quantite - 1): quantite;
+  }
+    
   const consoleData = Products.filter(
     (console) => console.category == "consoles"
   );
   const Data = consoleData.map((console) => {
-    return (
+    return(
       <div
         key={console.id}
         className="col-sm-12 col-md-6 col-lg-3 card"
@@ -39,36 +48,36 @@ function ConsoleCategory(props: ItemProductsProps) {
             alt="..."
           />
         </a>
-        <div className="card-body row">
-          <div className="col-4 text-start">
-            <h4 className="phone_title">{console.type}</h4>
-            <p className="fs-5">
-              <a href="produit.html" id="phone 1">
-                see more
-              </a>
-            </p>
+        <div className="card-body">
+          <div className="row">
+            <div className="col-6 text-start">
+              <h4 className="phone_title">{console.type}</h4>
+            </div>
+            <div className="col-6 text-end">
+              <p className="fs-4 phone_prix">
+                {console.prix}
+                <span>DH</span>
+              </p>
+            </div>
           </div>
-          <div className="col-8 text-end">
-            <p className="fs-4 phone_prix">
-              {console.prix}
-              <span>DH</span>
-            </p>
-            <p className="fs-4 ">
+          <div className="row">
+          <div className="col-6 text-start">
+              <p className="fw-bold ">
+                <button className="btn btn-success me-2"  onClick={() => handelQuantiteIncrease()}>+</button>
+                <button className="btn btn-danger me-2"  onClick={() => handelQuantiteDecrease()}>-</button>
+                {quantite} piece
+              </p>
+          </div>
+            <div className="col-6 text-end">
               <button
                 className="btn btn-primary"
                 onClick={() =>
-                  panierItems([
-                    console.id,
-                    console.image,
-                    console.type,
-                    console.quatite,
-                    console.prix,
-                  ])
+                  panierItems([console.id, console.image, console.type, quantite,console.prix])
                 }
               >
-               + add to cart +
+                + add cart +
               </button>
-            </p>
+            </div>
           </div>
         </div>
       </div>

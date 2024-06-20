@@ -6,23 +6,32 @@ import OffCanvas from "../Panier/OffCanvas";
 
 
 
-export interface ItemProductsProps {
-    count : number;
-    panierList: any[]; 
-    setCount: Function;
-    setPanierList: Function;
+export interface ItemList{
+    addToList: Function; 
   }
-
+export interface ItemProductsProps {
+    count: number;
+    setCount: Function;
+    panierList: Array<any>;
+    setPanierList: Function;
+    addToList: Function; 
+}
 export default function ItemProducts(){
-    const[panierList, setPanierList] = useState([]);
-    const[count, setCount] = useState(0);
+    const [panierList, setPanierList] = useState([]);
+    const [count, setCount] = useState(0);
+    
+    function addToList(addedToCart:{}){
+        setPanierList([...panierList, addedToCart]);
+        setCount(count => count + 1);
+       
+    }
     
 /*     console.log(count);
-    console.log(panierList); */
+    console.log(panierList);  */
     return(
     <>
-    <PhoneCategory count ={count} panierList={panierList} setCount={setCount} setPanierList={setPanierList}/> 
-    <ConsoleCategory count ={count} panierList={panierList} setCount={setCount} setPanierList={setPanierList}/>
+    <PhoneCategory addToList={addToList} panierList={panierList}/> 
+    <ConsoleCategory addToList={addToList} panierList={panierList}/>
     <OffCanvas count ={count} panierList={panierList} setCount={setCount} setPanierList={setPanierList}/>
     </>
     );

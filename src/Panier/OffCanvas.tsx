@@ -22,7 +22,7 @@ export default function OffCanvas ( props:ItemProductsProps ){
                   <div className="col-12 bg-light shadow-lg">
                     <div className="row gap-3 ">
                       {/* ChosenItems component */} 
-                      <ChosenItems panierList={props.panierList} setPanierList={props.setPanierList}/>
+                      <ChosenItems count ={props.count} setCount={props.setCount} panierList={props.panierList} setPanierList={props.setPanierList}/>
                     </div>
                   </div> 
                 </div>
